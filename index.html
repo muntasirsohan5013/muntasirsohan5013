@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Muntasir Sohan Portfolio</title>
+<meta name="description" content="Muntasir Sohan — web, Android, AI and embedded projects.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* VOICE occasion: a personal site that plays like a game hub
+   IDEA a star map where every project is a planet orbiting the developer's core
+   PICTURE live Three.js orbit of 11 project planets, drag to spin, click to open
+   COLOUR deep sea-black ground, coral core, one colour per project field
+   TYPE Chakra Petch 700 for display, Inter for text
+   LAYOUT laptop: copy left, orbit right; phone: title, orbit, buttons */
+:root{color-scheme:dark;--bg:#07141a;--panel:#0d2128;--line:#1d3a43;--ink:#eaf4f1;--muted:#a3bdb7;--coral:#ff6a4d;--mint:#6ff0c4;--web:#5cc8ff;--mob:#ffd166;--ai:#ff6a4d;--desk:#6ff0c4;--emb:#ff8fb1;--learn:#c7f464}
+*{box-sizing:border-box;min-width:0}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Inter,system-ui,sans-serif;overflow-x:clip}
+a{color:inherit}
+h1,h2,h3{font-family:"Chakra Petch",Inter,sans-serif;line-height:1.05;letter-spacing:-.01em;margin:0;text-wrap:balance}
+.band{padding:clamp(40px,6vw,88px) max(5vw,16px)}
+.wrap{max-width:1240px;margin:0 auto}
+nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:12px max(5vw,16px);background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.logo{font:700 20px "Chakra Petch",sans-serif;text-decoration:none;display:flex;align-items:center;gap:10px}
+.logo i{width:30px;height:30px;border-radius:8px;background:var(--coral);display:grid;place-items:center;color:#07141a;font-style:normal;font-size:15px}
+nav .links{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap}
+nav .links a{text-decoration:none;color:var(--muted);padding:10px 12px;border-radius:8px;font-weight:500}
+nav .links a:hover,nav .links a:focus-visible{color:var(--ink);background:var(--panel)}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:46px;padding:0 20px;border-radius:10px;font-weight:600;text-decoration:none;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer;font-size:16px;font-family:inherit}
+.btn.main{background:var(--coral);border-color:var(--coral);color:#07141a}
+.btn:hover{transform:translateY(-2px)}
+.btn:focus-visible,a:focus-visible,button:focus-visible{outline:3px solid var(--mint);outline-offset:3px}
+.hero{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);grid-template-areas:"title scene" "act scene";gap:0 40px;align-items:center;max-width:1240px;margin:0 auto;padding:clamp(24px,4vw,56px) max(5vw,16px) clamp(32px,4vw,56px)}
+.h-title{grid-area:title;align-self:end}
+.h-act{grid-area:act;align-self:start}
+.hero h1{font-size:clamp(44px,6.4vw,84px)}
+.hero h1 span{display:block;font-size:.42em;color:var(--mint);margin-bottom:12px;letter-spacing:.02em}
+.lede{font-size:18px;color:var(--muted);max-width:34em;margin:20px 0 0}
+.acts{display:flex;gap:12px;flex-wrap:wrap;margin:28px 0}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;max-width:440px}
+.stats div{border-top:2px solid var(--line);padding-top:10px}
+.stats b{display:block;font:700 34px "Chakra Petch",sans-serif}
+.stats small{color:var(--muted);font-size:14px}
+.scene{grid-area:scene;position:relative;height:clamp(380px,52vw,640px);border-radius:24px;background:radial-gradient(circle at 50% 45%,#12343c 0,#0a1c22 55%,var(--bg) 80%);overflow:hidden;cursor:grab;touch-action:pan-y}
+.scene.drag{cursor:grabbing}
+.scene canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hint{position:absolute;right:14px;top:12px;font-size:13px;color:var(--muted);background:#07141acc;padding:6px 10px;border-radius:8px;pointer-events:none}
+.legend{position:absolute;left:12px;bottom:12px;right:12px;display:flex;flex-wrap:wrap;gap:6px;pointer-events:none}
+.legend span{font-size:13px;background:#07141ad9;border-radius:999px;padding:4px 10px;display:flex;align-items:center;gap:6px}
+.legend span::before,.tag::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c)}
+.tip{position:absolute;z-index:3;pointer-events:none;background:var(--ink);color:#07141a;font-weight:600;font-size:14px;padding:6px 10px;border-radius:8px;transform:translate(-50%,-140%);white-space:nowrap;opacity:0;transition:opacity .15s}
+.tip.on{opacity:1}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:28px}
+.sec-head h2{font-size:clamp(32px,4vw,48px)}
+.sec-head p{color:var(--muted);margin:10px 0 0;max-width:36em}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--muted);font:500 15px Inter,sans-serif;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--ink);color:#07141a;border-color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:18px;perspective:1000px}
+.card{position:relative;display:flex;flex-direction:column;gap:12px;padding:22px;border-radius:18px;background:var(--panel);border:1px solid var(--line);transform-style:preserve-3d;transition:transform .2s ease,border-color .2s;will-change:transform}
+.card:hover{border-color:var(--c)}
+.card.flash{animation:flash 1.4s ease}
+@keyframes flash{0%,100%{box-shadow:0 0 0 0 transparent}30%{box-shadow:0 0 0 4px var(--c)}}
+.orb{width:54px;height:54px;border-radius:50%;background:radial-gradient(circle at 32% 30%,#fff8 0,var(--c) 28%,color-mix(in srgb,var(--c) 40%,#000) 100%);transform:translateZ(40px)}
+.tag{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
+.card h3{font-size:22px;transform:translateZ(24px)}
+.card p{margin:0;color:var(--muted);flex:1}
+.tech{display:flex;flex-wrap:wrap;gap:6px}
+.tech span{font-size:13px;padding:3px 9px;border-radius:6px;background:#07141a;border:1px solid var(--line)}
+.card a.code{align-self:flex-start;font-weight:600;color:var(--c);text-decoration:none;padding:10px 0}
+.card a.code:hover{text-decoration:underline}
+.empty{color:var(--muted)}
+.skills{background:#0a1b21;border-block:1px solid var(--line)}
+.sk{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:start}
+.bars{display:grid;gap:14px}
+.bar{display:grid;grid-template-columns:8.5em minmax(0,1fr) 2.5em;align-items:center;gap:12px}
+.bar i{display:block;height:14px;border-radius:7px;background:var(--line);overflow:hidden}
+.bar i b{display:block;height:100%;width:var(--w);background:var(--c);border-radius:7px}
+.bar em{font-style:normal;text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.field{padding:18px;border-radius:14px;background:var(--panel);border:1px solid var(--line);border-top:4px solid var(--c)}
+.field b{font:700 30px "Chakra Petch",sans-serif;display:block}
+.field span{color:var(--muted);font-size:15px}
+.contact{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:40px;align-items:center}
+.contact h2{font-size:clamp(34px,4.6vw,56px)}
+.contact p{color:var(--muted);font-size:18px}
+.mail{padding:24px;border-radius:18px;background:var(--panel);border:1px solid var(--line);display:grid;gap:14px}
+.mail code{font-size:17px;overflow-wrap:anywhere;color:var(--mint)}
+.mail .row{display:flex;gap:10px;flex-wrap:wrap}
+footer{padding:28px max(5vw,16px);border-top:1px solid var(--line);color:var(--muted);font-size:14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+@media(max-width:900px){.hero{grid-template-columns:minmax(0,1fr);grid-template-areas:"title" "scene" "act";gap:20px}.sk,.contact{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:600px){.hero h1{font-size:44px}.stats b{font-size:26px}.bar{grid-template-columns:6.5em minmax(0,1fr) 2em}.fields{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.hint{display:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.card,.btn{transition:none}.card.flash{animation:none}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="#top"><i>MS</i>Muntasir Sohan</a>
+  <div class="links"><a href="#projects">Projects</a><a href="#skills">Skills</a><a href="#contact">Contact</a></div>
+  <a class="btn" href="https://github.com/muntasirsohan5013">GitHub</a>
+</nav>
+
+<header class="hero" id="top">
+  <div class="h-title">
+    <h1><span>Player one</span>Muntasir Sohan</h1>
+    <p class="lede">I build web apps, Android apps, AI models, desktop tools and microcontroller firmware. Every planet on the map is a project — spin it and pick one.</p>
+  </div>
+  <div class="scene" id="scene" aria-label="3D map of projects. Drag to rotate, click a planet to open it.">
+    <div class="tip" id="tip"></div>
+    <div class="hint">Drag to spin · click a planet</div>
+    <div class="legend" id="legend"></div>
+  </div>
+  <div class="h-act">
+    <div class="acts"><a class="btn main" href="#projects">View projects</a><a class="btn" href="#contact">Contact me</a></div>
+    <div class="stats" id="stats"></div>
+  </div>
+</header>
+
+<section class="band" id="projects">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><h2>Projects</h2><p>Source code for every project is on GitHub. Filter by field or click a planet above.</p></div>
+      <div class="chips" id="chips" role="group" aria-label="Filter projects"></div>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<section class="band skills" id="skills">
+  <div class="wrap sk">
+    <div>
+      <div class="sec-head"><div><h2>Tech I use</h2><p>Counted from the projects on this page: how many use each language or tool.</p></div></div>
+      <div class="bars" id="bars"></div>
+    </div>
+    <div>
+      <div class="sec-head"><div><h2>Fields</h2><p>Projects per field.</p></div></div>
+      <div class="fields" id="fields"></div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="contact">
+  <div class="wrap contact">
+    <div>
+      <h2>Let's build something</h2>
+      <p>Open to projects, internships and collaboration. The quickest way to reach me is email.</p>
+    </div>
+    <div class="mail">
+      <code id="email">thephenomenalsohan2332@gmail.com</code>
+      <div class="row">
+        <button class="btn main" id="copy" type="button">Copy email</button>
+        <a class="btn" href="mailto:thephenomenalsohan2332@gmail.com">Open mail app</a>
+        <a class="btn" href="https://github.com/muntasirsohan5013">GitHub profile</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer><span>© <span id="yr">2026</span> Muntasir Sohan</span><a href="https://github.com/muntasirsohan5013">github.com/muntasirsohan5013</a></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+{
+const GH='https://github.com/muntasirsohan5013/';
+const CATS={web:['Web','--web'],mob:['Mobile','--mob'],ai:['AI / ML','--ai'],desk:['Desktop & tools','--desk'],emb:['Embedded','--emb'],learn:['Learning','--learn']};
+const P=[
+ {n:'TripNest',r:'TripNest-With-Firebase',c:'mob',d:'Android travel app on Firebase: hotels, transport, best destinations and traveller posts, plus an admin panel to manage users and posts.',t:['Java','Android','Firebase']},
+ {n:'Student Admission Portal',r:'Student-Admission-Portal',c:'web',d:'University admission portal with student registration, Google sign-in, password reset, university pages and admin updates.',t:['Python','HTML','Google OAuth']},
+ {n:'Food Ordering Website',r:'Food-Ordering_Website',c:'web',d:'Food ordering website: browse the menu, add dishes to a cart and place an order.',t:['HTML','CSS','JavaScript']},
+ {n:'Real-Time Emotion Detector',r:'Real-Time-Emotion-Detector',c:'ai',d:'Reads facial expressions from a live camera feed and labels the emotion, with a React web front end.',t:['Python','React','TypeScript']},
+ {n:'Image Captioning AI',r:'Image-Captioning-AI',c:'ai',d:'Deep-learning model that writes a sentence describing a photo, with scripts to clean data, build the vocabulary, train and generate captions.',t:['Python','PyTorch']},
+ {n:'Bulk Email Sender',r:'Bulk-Email-Sender-Desktop-App-PyQt5',c:'desk',d:'Desktop app that sends personalised bulk email over SMTP, with saved drafts, recipient lists and a settings screen.',t:['Python','PyQt5','SMTP']},
+ {n:'Wi-Fi Packet Sniffer',r:'Wifi-Packet-Snifer',c:'desk',d:'Captures packets on a chosen network interface, parses them and plots live traffic in a desktop GUI.',t:['Python','Networking']},
+ {n:'File Share',r:'File-Share-Python',c:'desk',d:'Python tool for sending files between devices.',t:['Python']},
+ {n:'Doc Converter',r:'Doc-Converter',c:'desk',d:'Python tool that converts documents from one format to another.',t:['Python']},
+ {n:'STM32F103 Clock',r:'STM32F103-Clock-Using-Keil-U',c:'emb',d:'Digital clock firmware for the STM32F103 microcontroller, written in C and built with Keil uVision.',t:['C','STM32','Keil']},
+ {n:'HSK4 Master',r:'HSK4-Master',c:'learn',d:'Study app for the HSK 4 Chinese exam: vocabulary and practice for learners.',t:['Chinese','Study app']}
+];
+const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const slug=r=>'p-'+r.toLowerCase().replace(/[^a-z0-9]+/g,'-');
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+document.getElementById('yr').textContent=new Date().getFullYear();
+
+/* stats, legend, fields, skills */
+const used=Object.keys(CATS).filter(k=>P.some(p=>p.c===k));
+const techCount={};P.forEach(p=>p.t.forEach(t=>techCount[t]=(techCount[t]||0)+1));
+const langs=['Python','Java','JavaScript','TypeScript','C','HTML'].filter(l=>techCount[l]);
+document.getElementById('stats').innerHTML=[[P.length,'projects'],[used.length,'fields'],[langs.length,'languages']].map(([b,s])=>`<div><b>${b}</b><small>${s}</small></div>`).join('');
+document.getElementById('legend').innerHTML=used.map(k=>`<span style="--c:var(${CATS[k][1]})">${CATS[k][0]}</span>`).join('');
+document.getElementById('fields').innerHTML=used.map(k=>`<div class="field" style="--c:var(${CATS[k][1]})"><b>${P.filter(p=>p.c===k).length}</b><span>${CATS[k][0]}</span></div>`).join('');
+const top=Object.entries(techCount).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0])).slice(0,8);
+const max=top[0][1];const barCols=['--mint','--coral','--web','--mob','--emb','--learn','--mint','--web'];
+document.getElementById('bars').innerHTML=top.map(([t,n],i)=>`<div class="bar" style="--c:var(${barCols[i]});--w:${n/max*100}%"><span>${esc(t)}</span><i><b></b></i><em>${n}</em></div>`).join('');
+
+/* cards + filters */
+const grid=document.getElementById('grid'),chips=document.getElementById('chips');
+let filter='all';
+chips.innerHTML=[['all','All']].concat(used.map(k=>[k,CATS[k][0]])).map(([k,l])=>`<button class="chip" type="button" data-f="${k}" aria-pressed="${k==='all'}">${l}</button>`).join('');
+const render=()=>{
+  const list=P.filter(p=>filter==='all'||p.c===filter);
+  grid.innerHTML=list.length?list.map(p=>`<article class="card" id="${slug(p.r)}" style="--c:var(${CATS[p.c][1]})">
+    <div class="orb" aria-hidden="true"></div>
+    <span class="tag">${CATS[p.c][0]}</span>
+    <h3>${esc(p.n)}</h3><p>${esc(p.d)}</p>
+    <div class="tech">${p.t.map(t=>`<span>${esc(t)}</span>`).join('')}</div>
+    <a class="code" href="${GH+encodeURIComponent(p.r)}">View code →</a></article>`).join(''):'<p class="empty">No projects in this field yet.</p>';
+};
+render();
+chips.addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;filter=b.dataset.f;chips.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed',c===b));render();});
+if(!reduce&&matchMedia('(hover:hover)').matches){
+  grid.addEventListener('pointermove',e=>{const c=e.target.closest('.card');if(!c)return;const r=c.getBoundingClientRect();const x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;c.style.transform=`rotateY(${x*14}deg) rotateX(${-y*14}deg) translateZ(6px)`;});
+  grid.addEventListener('pointerout',e=>{const c=e.target.closest('.card');if(c&&!c.contains(e.relatedTarget))c.style.transform='';});
+}
+const openProject=p=>{
+  if(filter!=='all'&&filter!==p.c){filter='all';chips.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed',c.dataset.f==='all'));render();}
+  const el=document.getElementById(slug(p.r));if(!el)return;
+  el.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});
+  el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');
+};
+
+/* copy email */
+const copyBtn=document.getElementById('copy');
+copyBtn.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(document.getElementById('email').textContent);copyBtn.textContent='Copied';}catch(_){copyBtn.textContent='Select and copy';}setTimeout(()=>copyBtn.textContent='Copy email',1800);});
+
+/* 3D orbit map */
+const host=document.getElementById('scene'),tip=document.getElementById('tip');
+if(window.THREE){
+  const R=new THREE.WebGLRenderer({antialias:true,alpha:true});
+  R.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+  host.prepend(R.domElement);
+  const S=new THREE.Scene(),C=new THREE.PerspectiveCamera(45,1,.1,200);
+  C.position.set(0,4.2,17);C.lookAt(0,0,0);
+  const world=new THREE.Group();world.rotation.x=.18;S.add(world);
+  S.add(new THREE.AmbientLight(0xffffff,.55));
+  const L=new THREE.PointLight(0xffffff,1.3,80);L.position.set(8,10,12);S.add(L);
+  const coreL=new THREE.PointLight(new THREE.Color(css('--coral')),1.2,14);world.add(coreL);
+  const core=new THREE.Mesh(new THREE.IcosahedronGeometry(1.5,1),new THREE.MeshStandardMaterial({color:css('--coral'),emissive:'#5a1608',flatShading:true,roughness:.45,metalness:.2}));
+  const shell=new THREE.Mesh(new THREE.IcosahedronGeometry(2.05,1),new THREE.MeshBasicMaterial({color:css('--mint'),wireframe:true,transparent:true,opacity:.28}));
+  world.add(core,shell);
+  /* stars */
+  const sg=new THREE.BufferGeometry(),sp=[];let seed=7;const rnd=()=>(seed=seed*16807%2147483647)/2147483647;
+  for(let i=0;i<900;i++){const r=22+rnd()*40,a=rnd()*Math.PI*2,b=Math.acos(2*rnd()-1);sp.push(r*Math.sin(b)*Math.cos(a),r*Math.cos(b),r*Math.sin(b)*Math.sin(a));}
+  sg.setAttribute('position',new THREE.Float32BufferAttribute(sp,3));
+  S.add(new THREE.Points(sg,new THREE.PointsMaterial({color:'#cfe9e3',size:.12,transparent:true,opacity:.75})));
+  /* rings and planets */
+  const radii=[3.6,5.2,6.8],tilts=[.12,-.22,.3],rings=radii.map((r,i)=>{
+    const g=new THREE.Group();g.rotation.x=tilts[i];g.rotation.z=tilts[i]*.6;world.add(g);
+    const pts=[];for(let a=0;a<=64;a++)pts.push(new THREE.Vector3(Math.cos(a/64*Math.PI*2)*r,0,Math.sin(a/64*Math.PI*2)*r));
+    g.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),new THREE.LineBasicMaterial({color:'#2f5a64',transparent:true,opacity:.7})));
+    return g;});
+  const nodes=P.map((p,i)=>{
+    const ring=i%3,col=new THREE.Color(css(CATS[p.c][1]));
+    const m=new THREE.Mesh(new THREE.SphereGeometry(.38+(i%4)*.06,28,18),new THREE.MeshStandardMaterial({color:col,emissive:col.clone().multiplyScalar(.28),roughness:.5}));
+    m.userData={p,ring,a:i/P.length*Math.PI*2+ring,s:(.22-ring*.05)*(i%2?1:.85)};
+    rings[ring].add(m);return m;});
+  const place=()=>nodes.forEach(m=>{const r=radii[m.userData.ring];m.position.set(Math.cos(m.userData.a)*r,0,Math.sin(m.userData.a)*r);});
+  place();
+  const size=()=>{const w=host.clientWidth,h=host.clientHeight;R.setSize(w,h,false);C.aspect=w/h;C.position.z=w<520?23:17;C.updateProjectionMatrix();R.render(S,C);};
+  const ro=new ResizeObserver(size);ro.observe(host);
+  /* interaction */
+  const ray=new THREE.Raycaster(),ptr=new THREE.Vector2();let drag=null,moved=0,hover=null,spin=0,visible=true;
+  const pick=e=>{const r=host.getBoundingClientRect();ptr.set((e.clientX-r.left)/r.width*2-1,-((e.clientY-r.top)/r.height)*2+1);ray.setFromCamera(ptr,C);const hit=ray.intersectObjects(nodes)[0];return hit?hit.object:null;};
+  host.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY};moved=0;host.classList.add('drag');});
+  addEventListener('pointerup',()=>{drag=null;host.classList.remove('drag');});
+  host.addEventListener('pointermove',e=>{
+    if(drag){const dx=e.clientX-drag.x,dy=e.clientY-drag.y;moved+=Math.abs(dx)+Math.abs(dy);world.rotation.y+=dx*.006;world.rotation.x=Math.max(-.5,Math.min(.8,world.rotation.x+dy*.004));drag={x:e.clientX,y:e.clientY};if(reduce)R.render(S,C);}
+    const o=pick(e);hover=o;host.style.cursor=o?'pointer':'';
+    if(o){const r=host.getBoundingClientRect();tip.textContent=o.userData.p.n;tip.style.left=(e.clientX-r.left)+'px';tip.style.top=(e.clientY-r.top)+'px';tip.classList.add('on');}else tip.classList.remove('on');
+  });
+  host.addEventListener('pointerleave',()=>{tip.classList.remove('on');hover=null;});
+  host.addEventListener('click',e=>{if(moved>6)return;const o=pick(e);if(o)openProject(o.userData.p);});
+  const io=new IntersectionObserver(es=>{visible=es[0].isIntersecting;});io.observe(host);
+  let last=performance.now();
+  const loop=t=>{
+    const dt=Math.min((t-last)/1000,.05);last=t;
+    if(visible){
+      nodes.forEach(m=>{m.userData.a+=m.userData.s*dt*(hover?.25:1);m.scale.setScalar(m===hover?1.35:1);});place();
+      if(!drag)world.rotation.y+=dt*.06;
+      spin+=dt;core.rotation.y=spin*.4;core.rotation.x=spin*.2;shell.rotation.y=-spin*.15;
+      R.render(S,C);
+    }
+    requestAnimationFrame(loop);
+  };
+  if(reduce)R.render(S,C);else requestAnimationFrame(loop);
+}else{
+  host.insertAdjacentHTML('afterbegin','<p style="position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);padding:24px;text-align:center">The 3D map could not load. All projects are listed below.</p>');
+}
+}
+</script>
+</body>
+</html>
